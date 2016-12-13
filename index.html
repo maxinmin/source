@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="Author" content="maxinmin">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+     <title>地图展示页</title>
+ </head>
+ <body>
+	<div id="mapid" style="height: 600px;"></div>
+ </body>
+ <script>
+	var mymap = L.map('mapid').setView([39.9072, 116.3912], 15);
+	L.tileLayer('http://map.zhtu.net:8080/r3t-basemap/{z}/{x}/{y}/tile.jpg', {
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		maxZoom: 18,
+		id: 'your.mapbox.project.id',
+		accessToken: 'your.mapbox.public.access.token'
+    }).addTo(mymap);
+
+	// 显示天安门标记
+	L.marker([39.9072, 116.3912])
+	.addTo(mymap)
+	.bindPopup("<b>北京市天安门</b>")
+	.openPopup();
+
+	// 窗口
+	var popup = L.popup();
+
+	// 地图双击事件：显示mark标记，以及展示该点坐标
+    function onMapClick(e) {
+		 L.marker(e.latlng)
+		.addTo(mymap)
+		.bindPopup("<b>纬度："+e.latlng.lat+"</b></br><b>经度："+e.latlng.lng+"</b>")
+		.openPopup();
+    }
+
+	// 地图绑定双击事件
+	mymap.on('dblclick', onMapClick);
+
+	// 右上角显示比例尺
+	L.control.scale({"position":"topright"}).addTo(mymap);
+ </script>
+</html>
